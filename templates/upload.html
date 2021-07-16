@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Upload Files</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='myfont/css/all.min.css')}}">
+		<script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+       <style>
+           th{
+                text-align:center;
+           }
+       </style>
+    </head>
+    <body>
+        <div class="col-md-offset-3 col-md-5" style="margin-top:50px">
+            <form action="/" method="POST" enctype="multipart/form-data">
+                <h3 class="page-header text-success"><span class="fa fa-image"> Upload Files (SQLite Database)</span></h3>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category,message in messages %}
+                            <div class="alert alert-{{category}}">{{message}}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="form-group">
+                    <label>Browse File</label>
+                    <input type="file" class="form-control" name="upload_files">
+                </div>
+                <div class="form-group">
+                    <label>Browse Image</label>
+                    <input type="file" class="form-control"  name="upload_image">
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-block" value="Submit">
+                </div>
+            </form>
+        </div>
+        <div class="row">
+        <div class="col-md-offset-3 col-md-5">
+            {% if data %}
+                <h3 class="page-header text-success"><span class="fa fa-image"> View Files</span></h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Files</th>
+                        <th>Images</th>
+                        <th>Delete</th>
+                    </tr>
+                    {% for res in data %}
+                        {% set i=loop.index %}
+                        <tr>
+                            <td style="text-align:center">{{i}}</td>
+                            <td><a href="static/Files/{{res['fname']}}" class="btn btn-success btn-block">View Files</a></td>
+                            <td><a href="static/Image/{{res['imgname']}}" class="btn btn-primary btn-block">View Image</a></td>
+                            <td><a href="{{url_for('delete_record',id=res['pid'])}}" class="btn btn-danger btn-block del">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+   $("document").ready(function(){
+       $(".alert").hide(4000);
+   });
+</script>
